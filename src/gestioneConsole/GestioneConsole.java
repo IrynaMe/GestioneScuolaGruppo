@@ -28,7 +28,7 @@ public class GestioneConsole {
                 // Chiamo metodi partendo da tipi di dati
                 switch (entry.getValue().getTipoDiData()) {
                     case NUMERO:
-                        Integer numero = dammiIntero("Inserisci un numero:", "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.", 3, entry.getValue().rangeNumeroMin, entry.getValue().rangeNumeroMax);
+                        Integer numero = dammiIntero("Inserisci un numero da "+entry.getValue().getRangeNumeroMin()+" a "+entry.getValue().getRangeNumeroMax(), "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.", 3, entry.getValue().getRangeNumeroMin(), entry.getValue().getRangeNumeroMax());
                         if (numero== null) {
                             System.out.println("Inserimento non andato con successo");
                         } else {
@@ -37,7 +37,7 @@ public class GestioneConsole {
                         }
                         break;
                     case STRINGA:
-                        String stringa = dammiStringa("Inserisci una stringa:", "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.", 3, entry.getValue().rangeStringaMinLength, entry.getValue().rangeStringaMaxLength);
+                        String stringa = dammiStringa("Inserisci una stringa con lunghezza da "+entry.getValue().getRangeStringaMinLength()+" a "+ entry.getValue().getRangeStringaMaxLength() +" caratteri", "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.", 3, entry.getValue().getRangeStringaMinLength(), entry.getValue().getRangeStringaMaxLength());
                         if (stringa == null) {
                             System.out.println("Inserimento non andato con successo");
                         } else {
@@ -46,7 +46,7 @@ public class GestioneConsole {
                         }
                         break;
                     case LETTERA:
-                        String str = dammiLettera("Inserisci una lettera:", "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.",3,entry.getValue().rangeLetteraInizio,entry.getValue().rangeLetteraFine);
+                        String str = dammiLettera("Inserisci una lettera da "+entry.getValue().getRangeLetteraInizio()+" a "+entry.getValue().getRangeLetteraFine(), "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.",3,entry.getValue().getRangeLetteraInizio(),entry.getValue().getRangeLetteraFine());
                         if (str != null) {
                             System.out.println("Inserimento andato con successo");
                             obj.setLettera(str);
@@ -56,7 +56,7 @@ public class GestioneConsole {
                         break;
                     // Add cases for other TipoDiData values here
                     case DATA:
-                        LocalDate data = dammiData("Inserisci una data (formato dd-MM-yyyy):", "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.", 3, entry.getValue().rangeMinYear,entry.getValue().rangeMaxYear);
+                        LocalDate data = dammiData("Inserisci una data (formato dd-MM-yyyy), dove anno è da "+entry.getValue().getRangeMinYear()+" a "+entry.getValue().getRangeMaxYear(), "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.", 3, entry.getValue().getRangeMinYear(),entry.getValue().getRangeMaxYear());
                         if (data != null) {
                             System.out.println("Inserimento andato con successo");
                             obj.setData(data);
@@ -117,7 +117,7 @@ public class GestioneConsole {
         data.setRangeMaxYear(2024);
         VotoMenu sesso = new VotoMenu("Inserimento di sesso", TipoDiData.SESSO);
         VotoMenu mail = new VotoMenu("Inserimento di mail", TipoDiData.MAIL);
-        VotoMenu codiceFiscale = new VotoMenu("Inserimento di mail", TipoDiData.CODICE_FISCALE);
+        VotoMenu codiceFiscale = new VotoMenu("Inserimento di codiceFiscale", TipoDiData.CODICE_FISCALE);
         votiMenu.put(1, numeroIntero);
         votiMenu.put(2, stringa);
         votiMenu.put(3, lettera);
@@ -333,12 +333,36 @@ public class GestioneConsole {
             this.tipoDiData = tipoDiData;
         }
 
-        public void setNomeVotoMenu(String nomeVotoMenu) {
-            this.nomeVotoMenu = nomeVotoMenu;
+        public Integer getRangeNumeroMin() {
+            return rangeNumeroMin;
         }
 
-        public void setTipoDiData(TipoDiData tipoDiData) {
-            this.tipoDiData = tipoDiData;
+        public Integer getRangeNumeroMax() {
+            return rangeNumeroMax;
+        }
+
+        public Integer getRangeStringaMinLength() {
+            return rangeStringaMinLength;
+        }
+
+        public Integer getRangeStringaMaxLength() {
+            return rangeStringaMaxLength;
+        }
+
+        public String getRangeLetteraInizio() {
+            return rangeLetteraInizio;
+        }
+
+        public String getRangeLetteraFine() {
+            return rangeLetteraFine;
+        }
+
+        public Integer getRangeMinYear() {
+            return rangeMinYear;
+        }
+
+        public Integer getRangeMaxYear() {
+            return rangeMaxYear;
         }
 
         public void setRangeNumeroMin(Integer rangeNumeroMin) {
