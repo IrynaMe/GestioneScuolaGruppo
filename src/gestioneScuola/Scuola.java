@@ -20,10 +20,9 @@ public class Scuola {
 	}
 	
 	// Metodi:
-	
 	public void aggiungiAllievo(Allievo allievo) {
 		allievi.add(allievo);
-		stampaFileAllievi();
+		//  stampaFileAllievi();
 	}
 	
 	public void aggiungiInsegnante(Insegnante insegnante) {
