@@ -16,6 +16,7 @@ public class Main {
             System.out.println("Numero: " + obj.getNumero());
             System.out.println("Stringa: " + obj.getStringa());
             System.out.println("Data: " + obj.getData());
+            System.out.println("Ora: " + obj.getOreMin());
             System.out.println("Sesso: " + obj.getSesso());
             System.out.println("Lettera: " + obj.getLettera());
             System.out.println("Codice Fiscale: " + obj.getCodiceFiscale());

@@ -7,12 +7,12 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class GestioneConsole {
-    private static int index=0;
+    private static int index = 0;
     private Scanner sc = new Scanner(System.in);
-  //  public static final String ANSI_RED = "\u001B[31m";
-  //  public static final String ANSI_RESET = "\u001B[0m";
+    //  public static final String ANSI_RED = "\u001B[31m";
+    //  public static final String ANSI_RESET = "\u001B[0m";
     private Map<Integer, VotoMenu> votiMenu = new HashMap<>();
-    Obj obj=new Obj();//per salvare valori return di inserimento
+    Obj obj = new Obj();//per salvare valori return di inserimento
 
     //crea menu da HashMap+gestisce risultati di return dai metodi
     public Obj stampaMenu() {
@@ -29,8 +29,8 @@ public class GestioneConsole {
                 // Chiamo metodi partendo da tipi di dati
                 switch (entry.getValue().getTipoDiData()) {
                     case NUMERO:
-                        Integer numero = dammiIntero("Inserisci un numero da "+entry.getValue().getRangeNumeroMin()+" a "+entry.getValue().getRangeNumeroMax(), "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.", 3, entry.getValue().getRangeNumeroMin(), entry.getValue().getRangeNumeroMax());
-                        if (numero== null) {
+                        Integer numero = dammiIntero("Inserisci un numero da " + entry.getValue().getRangeNumeroMin() + " a " + entry.getValue().getRangeNumeroMax(), "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.", 3, entry.getValue().getRangeNumeroMin(), entry.getValue().getRangeNumeroMax());
+                        if (numero == null) {
                             System.out.println("Inserimento non andato con successo");
                         } else {
                             System.out.println("Inserimento andato con successo");
@@ -38,7 +38,7 @@ public class GestioneConsole {
                         }
                         break;
                     case STRINGA:
-                        String stringa = dammiStringa("Inserisci una stringa con lunghezza da "+entry.getValue().getRangeStringaMinLength()+" a "+ entry.getValue().getRangeStringaMaxLength() +" caratteri", "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.", 3, entry.getValue().getRangeStringaMinLength(), entry.getValue().getRangeStringaMaxLength());
+                        String stringa = dammiStringa("Inserisci una stringa con lunghezza da " + entry.getValue().getRangeStringaMinLength() + " a " + entry.getValue().getRangeStringaMaxLength() + " caratteri", "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.", 3, entry.getValue().getRangeStringaMinLength(), entry.getValue().getRangeStringaMaxLength());
                         if (stringa == null) {
                             System.out.println("Inserimento non andato con successo");
                         } else {
@@ -47,7 +47,7 @@ public class GestioneConsole {
                         }
                         break;
                     case LETTERA:
-                        String str = dammiLettera("Inserisci una lettera da "+entry.getValue().getRangeLetteraInizio()+" a "+entry.getValue().getRangeLetteraFine(), "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.",3,entry.getValue().getRangeLetteraInizio(),entry.getValue().getRangeLetteraFine());
+                        String str = dammiLettera("Inserisci una lettera da " + entry.getValue().getRangeLetteraInizio() + " a " + entry.getValue().getRangeLetteraFine(), "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.", 3, entry.getValue().getRangeLetteraInizio(), entry.getValue().getRangeLetteraFine());
                         if (str != null) {
                             System.out.println("Inserimento andato con successo");
                             obj.setLettera(str);
@@ -56,7 +56,7 @@ public class GestioneConsole {
                         }
                         break;
                     case DATA:
-                        LocalDate data = dammiData("Inserisci una data (formato dd-MM-yyyy), dove anno è da "+entry.getValue().getRangeMinYear()+" a "+entry.getValue().getRangeMaxYear(), "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.", 3, entry.getValue().getRangeMinYear(),entry.getValue().getRangeMaxYear());
+                        LocalDate data = dammiData("Inserisci una data (formato dd-MM-yyyy), dove anno è da " + entry.getValue().getRangeMinYear() + " a " + entry.getValue().getRangeMaxYear(), "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.", 3, entry.getValue().getRangeMinYear(), entry.getValue().getRangeMaxYear());
                         if (data != null) {
                             System.out.println("Inserimento andato con successo");
                             obj.setData(data);
@@ -65,7 +65,7 @@ public class GestioneConsole {
                         }
                         break;
                     case ORARIO:
-                        LocalTime ore = dammiOra("Inserisci ore (formato hh:mm), dove hour è da "+entry.getValue().getMinHour()+" a "+entry.getValue().getMaxHour(), "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.", 3, entry.getValue().getMinHour(),entry.getValue().getMaxHour());
+                        LocalTime ore = dammiOra("Inserisci ore (formato hh:mm), dove hour è da " + entry.getValue().getMinHour() + " a " + entry.getValue().getMaxHour(), "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.", 3, entry.getValue().getMinHour(), entry.getValue().getMaxHour());
                         if (ore != null) {
                             System.out.println("Inserimento andato con successo");
                             obj.setOreMin(ore);
@@ -75,7 +75,7 @@ public class GestioneConsole {
                         break;
                     case SESSO:
                         String sesso = dammiSesso("Inserisci il sesso (m/f):", "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.", 3);
-                        if (sesso!=null) {
+                        if (sesso != null) {
                             System.out.println("Inserimento andato con successo");
                             obj.setSesso(sesso);
                         } else {
@@ -84,7 +84,7 @@ public class GestioneConsole {
                         break;
                     case MAIL:
                         String mail = dammiMail("Inserisci un indirizzo email:", "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.", 3);
-                        if (mail!=null) {
+                        if (mail != null) {
                             System.out.println("Inserimento andato con successo");
                             obj.setMail(mail);
                         } else {
@@ -93,7 +93,7 @@ public class GestioneConsole {
                         break;
                     case CODICE_FISCALE:
                         String codiceFiscale = dammiCodiceFiscale("Inserisci un codice fiscale:", "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.", 3);
-                        if (codiceFiscale!=null) {
+                        if (codiceFiscale != null) {
                             System.out.println("Inserimento andato con successo");
                             obj.setCodiceFiscale(codiceFiscale);
                         } else {
@@ -134,8 +134,8 @@ public class GestioneConsole {
         votiMenu.put(++index, data);
         //ora
         VotoMenu orario = new VotoMenu("Inserimento di orario", TipoDiData.ORARIO);
-        orario.setMinHour(9);
-        orario.setMaxHour(18);
+        orario.setMinHour("09");
+        orario.setMaxHour("18");
         votiMenu.put(++index, orario);
         //sesso
         VotoMenu sesso = new VotoMenu("Inserimento di sesso", TipoDiData.SESSO);
@@ -151,9 +151,9 @@ public class GestioneConsole {
 
     //i metodi return null se input errato, valore se corretto
     public Integer dammiIntero(String msgShow, String msgRetry, String msgError,
-                                 String msgSuccess, int tentativi, int rangeMin, int rangeMax) {
-        String input=null;
-        Integer result=null;
+                               String msgSuccess, int tentativi, int rangeMin, int rangeMax) {
+        String input = null;
+        Integer result = null;
         if (rangeMin < 0 || rangeMax < 0 || rangeMin > rangeMax) {
             System.out.println("Range non valido");
         } else {
@@ -166,11 +166,11 @@ public class GestioneConsole {
                     tentativi--;
                 }
             } while (!Pattern.matches(regexInt, input) && tentativi != 0);
-            if (tentativi==0) {
+            if (tentativi == 0) {
                 result = null;
                 System.out.println(msgError);
             } else {
-                result=Integer.parseInt(input);
+                result = Integer.parseInt(input);
                 System.out.println(msgSuccess);
             }
         }
@@ -204,7 +204,7 @@ public class GestioneConsole {
     } //cognome, nome, LuogoNascita, materia, classe,sesso
 
     public String dammiSesso(String msgShow, String msgRetry, String msgError,
-                                String msgSuccess, int tentativi) {
+                             String msgSuccess, int tentativi) {
         String regexSesso = "^[mfMF]$";
         String input;
         Integer[] arrResult = new Integer[2];
@@ -225,11 +225,12 @@ public class GestioneConsole {
 
         return input;
     }
+
     public String dammiLettera(String msgShow, String msgRetry, String msgError,
-                                  String msgSuccess, int tentativi, String letteraInizio, String letteraFine) {
+                               String msgSuccess, int tentativi, String letteraInizio, String letteraFine) {
         int asciiInizio = (int) letteraInizio.charAt(0);
         int asciiFine = (int) letteraFine.charAt(0);
-        String input=null;
+        String input = null;
         Integer[] arrResult = new Integer[2];
         if (asciiInizio > asciiFine || letteraInizio.length() > 1 || letteraFine.length() > 1) {
             System.out.println("Range di lettere non valido");
@@ -262,11 +263,10 @@ public class GestioneConsole {
         String minYearString = String.valueOf(minYear);
         String maxYearString = String.valueOf(maxYear);
         LocalDate data = null;
-        if (minYear > maxYear || minYearString.length() < 4 || maxYearString.length() < 4) {
+        if (minYear > maxYear || minYearString.length() != 4 || maxYearString.length() != 4) {
             System.out.println("Range di anni non valido");
         } else {
-            String regexData = "^\\d{2}-\\d{2}-\\d{4}$";
-        //    String regexData = "^\\d{2}-\\d{2}-("+m"|"+200[0-9]|2010+")$";
+            String regexData = "^\\d{2}-\\d{2}-(" + minYear + "|" + maxYear + ")$";
             do {
                 System.out.println(msgShow);
                 input = sc.nextLine();
@@ -275,7 +275,7 @@ public class GestioneConsole {
                     input = null;
                     tentativi--;
                 }
-            } while (!Pattern.matches(regexData, input)&& tentativi != 0);
+            } while (!Pattern.matches(regexData, input) && tentativi != 0);
             if (input == null) {
                 System.out.println(msgError);
             } else {
@@ -287,36 +287,28 @@ public class GestioneConsole {
         }
         return data;
     }
-
     public LocalTime dammiOra(String msgShow, String msgRetry, String msgError,
-                               String msgSuccess, int tentativi, int minHour, int maxHour) {
-
+                              String msgSuccess, int tentativi, String minHour, String maxHour) {
+        if(minHour.length()!=2||maxHour.length()!=2){
+            System.out.println("Range di ore non valido, deve essere formsto hh (2 caratteri)");
+        }
         String input;
-        String minYearString = String.valueOf(minHour);
-        String maxYearString = String.valueOf(maxHour);
         LocalTime localTime = null;
-        if (minHour > maxHour || minYearString.length() < 4 ) {
-            System.out.println("Range di ore non valido");
-        } else {
-            String regexTime = "^\\d{2}:\\d{2}$";
-
-            do {
-                System.out.println(msgShow);
-                input = sc.nextLine();
-                if (!Pattern.matches(regexTime, input)) {
-                    System.out.println(msgRetry);
-                    input = null;
-                    tentativi--;
-                }
-            } while (!Pattern.matches(regexTime, input)&& tentativi != 0);
-            if (input == null) {
-                System.out.println(msgError);
-            } else {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-                localTime = LocalTime.parse(input, formatter);
-                System.out.println(msgSuccess);
+        String regexTime = "^("+minHour+"|"+maxHour+"]):[0-5][0-9]$";
+        do {
+            System.out.println(msgShow);
+            input = sc.nextLine();
+            if (!Pattern.matches(regexTime, input)) {
+                System.out.println(msgRetry);
+                input = null;
+                tentativi--;
             }
-
+        } while (input == null && tentativi != 0);
+        if (input == null) {
+            System.out.println(msgError);
+        } else {
+            localTime = LocalTime.parse(input);
+            System.out.println(msgSuccess);
         }
         return localTime;
     }
@@ -335,7 +327,7 @@ public class GestioneConsole {
                 input = null;
                 tentativi--;
             }
-        } while (!Pattern.matches(regexMail, input) &&tentativi != 0);
+        } while (!Pattern.matches(regexMail, input) && tentativi != 0);
         if (input == null) {
             System.out.println(msgError);
         } else {
@@ -372,9 +364,6 @@ public class GestioneConsole {
     public void chiudiScanner() {
         sc.close();
     }
-
-
-
 
 
 }//

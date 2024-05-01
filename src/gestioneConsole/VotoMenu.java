@@ -7,7 +7,7 @@ public class VotoMenu {
     Integer rangeStringaMinLength, rangeStringaMaxLength;//Da specificare lunghezza stringa con setter
     String rangeLetteraInizio, rangeLetteraFine;//da specificare range lettere con setter
     Integer rangeMinYear, rangeMaxYear;//da specificare range anni con setter
-    Integer minHour, maxHour; //da specificare range anni con setter
+    String minHour, maxHour; //da specificare range anni con setter
 
 
     public VotoMenu(String nomeVotoMenu, TipoDiData tipoDiData) {
@@ -47,9 +47,9 @@ public class VotoMenu {
         return rangeMaxYear;
     }
 
-    public Integer getMinHour() {return minHour;}
+    public String getMinHour() {return minHour;}
 
-    public Integer getMaxHour() {return maxHour;}
+    public String getMaxHour() {return maxHour;}
 
     public void setRangeNumeroMin(Integer rangeNumeroMin) {
         this.rangeNumeroMin = rangeNumeroMin;
@@ -83,9 +83,9 @@ public class VotoMenu {
         this.rangeMaxYear = rangeMaxYear;
     }
 
-    public void setMinHour(Integer minHour) {this.minHour = minHour;}
+    public void setMinHour(String minHour) {this.minHour = minHour;}
 
-    public void setMaxHour(Integer maxHour) {this.maxHour = maxHour;}
+    public void setMaxHour(String maxHour) {this.maxHour = maxHour;}
 
     public TipoDiData getTipoDiData() {
         return tipoDiData;
