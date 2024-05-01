@@ -1,11 +1,13 @@
 package gestioneConsole;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class Obj {//per salvare valori return di inserimento
     Integer numero;
     String stringa;
     LocalDate data;
+    LocalTime oreMin;
     String sesso;
     String lettera;
     String codiceFiscale;
@@ -22,6 +24,8 @@ public class Obj {//per salvare valori return di inserimento
     public void setData(LocalDate data) {
         this.data = data;
     }
+
+    public void setOreMin(LocalTime oreMin) {this.oreMin = oreMin;}
 
     public void setSesso(String sesso) {
         this.sesso = sesso;
@@ -50,6 +54,8 @@ public class Obj {//per salvare valori return di inserimento
     public LocalDate getData() {
         return data;
     }
+
+    public LocalTime getOreMin() {return oreMin;}
 
     public String getSesso() {
         return sesso;

@@ -1,11 +1,13 @@
 package gestioneConsole;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Pattern;
 
 public class GestioneConsole {
+    private static int index=0;
     private Scanner sc = new Scanner(System.in);
   //  public static final String ANSI_RED = "\u001B[31m";
   //  public static final String ANSI_RESET = "\u001B[0m";
@@ -62,6 +64,15 @@ public class GestioneConsole {
                             System.out.println("Inserimento non andato con successo");
                         }
                         break;
+                    case ORARIO:
+                        LocalTime ore = dammiOra("Inserisci ore (formato hh:mm), dove hour è da "+entry.getValue().getMinHour()+" a "+entry.getValue().getMaxHour(), "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.", 3, entry.getValue().getMinHour(),entry.getValue().getMaxHour());
+                        if (ore != null) {
+                            System.out.println("Inserimento andato con successo");
+                            obj.setOreMin(ore);
+                        } else {
+                            System.out.println("Inserimento non andato con successo");
+                        }
+                        break;
                     case SESSO:
                         String sesso = dammiSesso("Inserisci il sesso (m/f):", "Input non valido. Riprova.", "Errore: input non valido.", "Input valido.", 3);
                         if (sesso!=null) {
@@ -97,30 +108,44 @@ public class GestioneConsole {
         }
         return obj;
     }
-//creare voti di menu + !! specificare con setter limiti di inserimento per intero, stringa, lettera, data
+
+    //creare voti di menu + !! specificare con setter limiti di inserimento per intero, stringa, lettera, data
+    //da commentare voti non usate
     public void popolaHashMapMenu() {
+        //intero
         VotoMenu numeroIntero = new VotoMenu("Inserimento di un numero intero", TipoDiData.NUMERO);
         numeroIntero.setRangeNumeroMin(1);
         numeroIntero.setRangeNumeroMax(99);
+        votiMenu.put(++index, numeroIntero);
+        //stringa
         VotoMenu stringa = new VotoMenu("Inserimento di una stringa", TipoDiData.STRINGA);
         stringa.setRangeStringaMinLength(2);
         stringa.setRangeStringaMaxLength(20);
-        VotoMenu lettera = new VotoMenu("Inserimento di una lettera", TipoDiData.LETTERA);
+        votiMenu.put(++index, stringa);
+        //lettera
+/*        VotoMenu lettera = new VotoMenu("Inserimento di una lettera", TipoDiData.LETTERA);
         lettera.setRangeLetteraInizio("A");
         lettera.setRangeLetteraFine("Z");
+        votiMenu.put(++index, lettera);*/
+        //data
         VotoMenu data = new VotoMenu("Inserimento di data", TipoDiData.DATA);
         data.setRangeMinYear(1900);
         data.setRangeMaxYear(2024);
+        votiMenu.put(++index, data);
+        //ora
+        VotoMenu orario = new VotoMenu("Inserimento di orario", TipoDiData.ORARIO);
+        orario.setMinHour(9);
+        orario.setMaxHour(18);
+        votiMenu.put(++index, orario);
+        //sesso
         VotoMenu sesso = new VotoMenu("Inserimento di sesso", TipoDiData.SESSO);
+        votiMenu.put(++index, sesso);
+        //mail
         VotoMenu mail = new VotoMenu("Inserimento di mail", TipoDiData.MAIL);
+        votiMenu.put(++index, mail);
+        //cf
         VotoMenu codiceFiscale = new VotoMenu("Inserimento di codiceFiscale", TipoDiData.CODICE_FISCALE);
-        votiMenu.put(1, numeroIntero);
-        votiMenu.put(2, stringa);
-        votiMenu.put(3, lettera);
-        votiMenu.put(4, data);
-        votiMenu.put(5, sesso);
-        votiMenu.put(6, mail);
-        votiMenu.put(7, codiceFiscale);
+        votiMenu.put(++index, codiceFiscale);
     }
 
 
@@ -241,6 +266,7 @@ public class GestioneConsole {
             System.out.println("Range di anni non valido");
         } else {
             String regexData = "^\\d{2}-\\d{2}-\\d{4}$";
+        //    String regexData = "^\\d{2}-\\d{2}-("+m"|"+200[0-9]|2010+")$";
             do {
                 System.out.println(msgShow);
                 input = sc.nextLine();
@@ -260,6 +286,39 @@ public class GestioneConsole {
 
         }
         return data;
+    }
+
+    public LocalTime dammiOra(String msgShow, String msgRetry, String msgError,
+                               String msgSuccess, int tentativi, int minHour, int maxHour) {
+
+        String input;
+        String minYearString = String.valueOf(minHour);
+        String maxYearString = String.valueOf(maxHour);
+        LocalTime localTime = null;
+        if (minHour > maxHour || minYearString.length() < 4 ) {
+            System.out.println("Range di ore non valido");
+        } else {
+            String regexTime = "^\\d{2}:\\d{2}$";
+
+            do {
+                System.out.println(msgShow);
+                input = sc.nextLine();
+                if (!Pattern.matches(regexTime, input)) {
+                    System.out.println(msgRetry);
+                    input = null;
+                    tentativi--;
+                }
+            } while (!Pattern.matches(regexTime, input)&& tentativi != 0);
+            if (input == null) {
+                System.out.println(msgError);
+            } else {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+                localTime = LocalTime.parse(input, formatter);
+                System.out.println(msgSuccess);
+            }
+
+        }
+        return localTime;
     }
 
     public String dammiMail(String msgShow, String msgRetry, String msgError,
