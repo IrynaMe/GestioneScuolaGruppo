@@ -12,13 +12,12 @@ public class GestioneConsole {
     private Map<Integer, VotoMenu> votiMenu = new HashMap<>();
     Obj obj=new Obj();//per salvare valori return di inserimento
 
-    //crea menu da HashMap
+    //crea menu da HashMap+gestisce risultati di return dai metodi
     public Obj stampaMenu() {
         Integer key = null;
         VotoMenu votoMenu = null;
         for (Map.Entry<Integer, VotoMenu> entry : votiMenu.entrySet()) {
             System.out.println(entry.getKey() + " -> " + entry.getValue());
-
         }
         System.out.println("Inserisci la scelta: ");
         int scelta = Integer.parseInt(sc.nextLine());
@@ -90,17 +89,15 @@ public class GestioneConsole {
                             System.out.println("Inserimento non andato con successo");
                         }
                         break;
-
                     default:
                         System.out.println("Input di chiave menu non valido");
                         break;
                 }
             }
-
         }
         return obj;
     }
-
+//creare voti di menu + specificare limiti di inserimento per intero, stringa, lettera, data
     public void popolaHashMapMenu() {
         VotoMenu numeroIntero = new VotoMenu("Inserimento di un numero intero", TipoDiData.NUMERO);
         numeroIntero.setRangeNumeroMin(1);
