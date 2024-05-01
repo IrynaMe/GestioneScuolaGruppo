@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         GestioneConsole gestioneConsole = new GestioneConsole();
         gestioneConsole.popolaHashMapMenu();
-        GestioneConsole.Obj obj;
+        gestioneConsole.Obj obj;
 
         boolean isInserimento = true;
         while (isInserimento) {
@@ -26,6 +26,7 @@ public class Main {
             String scelta = scanner.nextLine();
 
             if (!scelta.equalsIgnoreCase("s")) {
+                System.out.println("Arrivederci!");
                 isInserimento = false;
                 scanner.close();
             }
