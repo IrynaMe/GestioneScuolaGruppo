@@ -97,7 +97,7 @@ public class GestioneConsole {
         }
         return obj;
     }
-//creare voti di menu + specificare limiti di inserimento per intero, stringa, lettera, data
+//creare voti di menu + !! specificare con setter limiti di inserimento per intero, stringa, lettera, data
     public void popolaHashMapMenu() {
         VotoMenu numeroIntero = new VotoMenu("Inserimento di un numero intero", TipoDiData.NUMERO);
         numeroIntero.setRangeNumeroMin(1);
