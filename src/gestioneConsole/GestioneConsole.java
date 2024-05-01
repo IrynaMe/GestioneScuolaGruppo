@@ -9,8 +9,11 @@ import java.util.regex.Pattern;
 public class GestioneConsole {
     private static int index = 0;
     private Scanner sc = new Scanner(System.in);
-    //  public static final String ANSI_RED = "\u001B[31m";
-    //  public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_ORANGE = "\u001B[38;5;208m";
+    public static final String ANSI_RESET = "\u001B[0m";
     private Map<Integer, VotoMenu> votiMenu = new HashMap<>();
     Obj obj = new Obj();//per salvare valori return di inserimento
 
@@ -19,10 +22,15 @@ public class GestioneConsole {
         Integer key = null;
         VotoMenu votoMenu = null;
         for (Map.Entry<Integer, VotoMenu> entry : votiMenu.entrySet()) {
+            System.out.print(ANSI_BLUE);
             System.out.println(entry.getKey() + " -> " + entry.getValue());
+            System.out.print(ANSI_RESET);
         }
+
         System.out.println("Inserisci la scelta: ");
+
         int scelta = Integer.parseInt(sc.nextLine());
+
 
         for (Map.Entry<Integer, VotoMenu> entry : votiMenu.entrySet()) {
             if (scelta == entry.getKey()) {
@@ -114,8 +122,8 @@ public class GestioneConsole {
     public void popolaHashMapMenu() {
         //intero
         VotoMenu numeroIntero = new VotoMenu("Inserimento di un numero intero", TipoDiData.NUMERO);
-        numeroIntero.setRangeNumeroMin(1);
-        numeroIntero.setRangeNumeroMax(99);
+        numeroIntero.setRangeNumeroMin("1");
+        numeroIntero.setRangeNumeroMax("100000");
         votiMenu.put(++index, numeroIntero);
         //stringa
         VotoMenu stringa = new VotoMenu("Inserimento di una stringa", TipoDiData.STRINGA);
@@ -123,10 +131,10 @@ public class GestioneConsole {
         stringa.setRangeStringaMaxLength(20);
         votiMenu.put(++index, stringa);
         //lettera
-/*        VotoMenu lettera = new VotoMenu("Inserimento di una lettera", TipoDiData.LETTERA);
+       VotoMenu lettera = new VotoMenu("Inserimento di una lettera", TipoDiData.LETTERA);
         lettera.setRangeLetteraInizio("A");
-        lettera.setRangeLetteraFine("Z");
-        votiMenu.put(++index, lettera);*/
+        lettera.setRangeLetteraFine("D");
+        votiMenu.put(++index, lettera);
         //data
         VotoMenu data = new VotoMenu("Inserimento di data", TipoDiData.DATA);
         data.setRangeMinYear(1900);
@@ -151,76 +159,101 @@ public class GestioneConsole {
 
     //i metodi return null se input errato, valore se corretto
     public Integer dammiIntero(String msgShow, String msgRetry, String msgError,
-                               String msgSuccess, int tentativi, int rangeMin, int rangeMax) {
-        String input = null;
+                               String msgSuccess, int tentativi, String rangeMin, String rangeMax) {
+        String input;
         Integer result = null;
-        if (rangeMin < 0 || rangeMax < 0 || rangeMin > rangeMax) {
+        Integer numMin = Integer.parseInt(rangeMin);
+        Integer numMax = Integer.parseInt(rangeMax);
+        if (numMin < 0 || numMin > numMax) {
             System.out.println("Range non valido");
         } else {
-            String regexInt = "[" + rangeMin + "-" + rangeMax + "]";
+            StringBuilder regexBuilder = new StringBuilder("\\b(").append(rangeMin).append("|").append(rangeMax).append("|");
+            for (int i = numMin + 1; i < numMax; i++) {
+                regexBuilder.append(i).append("|");
+            }
+            regexBuilder.append(")\\b");
+            String regexInt = regexBuilder.toString();
             do {
                 System.out.println(msgShow);
-                input = sc.nextLine();
-                if (!Pattern.matches(regexInt, input)) {
+                input = sc.nextLine().trim();
+                if (!input.isEmpty() && !Pattern.matches(regexInt, input)) {
+                    System.out.print(ANSI_ORANGE);
                     System.out.println(msgRetry);
+                    System.out.print(ANSI_RESET);
                     tentativi--;
                 }
-            } while (!Pattern.matches(regexInt, input) && tentativi != 0);
+            } while ((input.isEmpty() || !Pattern.matches(regexInt, input)) && tentativi != 0);
             if (tentativi == 0) {
-                result = null;
+                System.out.print(ANSI_RED);
                 System.out.println(msgError);
+                System.out.print(ANSI_RESET);
             } else {
                 result = Integer.parseInt(input);
+                System.out.println(ANSI_GREEN);
                 System.out.println(msgSuccess);
+                System.out.println(ANSI_RESET);
             }
         }
         return result;
     }
 
+
+
     public String dammiStringa(String msgShow, String msgRetry, String msgError,
                                String msgSuccess, int tentativi, int rangeMinLength, int rangeMaxLength) {
-        String input = null;
+        String input=null;
         if (rangeMinLength < 0 || rangeMaxLength < 0 || rangeMinLength > rangeMaxLength) {
             System.out.println("Range di lunghezza non valido");
         } else {
-            String regexString = "^[a-zA-Z]{" + rangeMinLength + "," + rangeMaxLength + "}$";
-
+            String regexString = "^[a-zA-Z0-9]{" + rangeMinLength + "," + rangeMaxLength + "}$";
             do {
                 System.out.println(msgShow);
-                input = sc.nextLine();
-                if (!Pattern.matches(regexString, input)) {
+                input = sc.nextLine().trim();
+                if (!input.isEmpty() && !Pattern.matches(regexString, input)) {
+                    System.out.println(ANSI_ORANGE);
                     System.out.println(msgRetry);
-                    input = null;
+                    System.out.println(ANSI_RESET);
                     tentativi--;
                 }
-            } while (!Pattern.matches(regexString, input) && tentativi != 0);
-            if (input == null) {
+            } while (input.isEmpty() || (!input.isEmpty() && !Pattern.matches(regexString, input)) && tentativi != 0);
+            if (tentativi == 0) {
+                System.out.println(ANSI_RED);
                 System.out.println(msgError);
+                System.out.println(ANSI_RESET);
+                input = null;
             } else {
+                System.out.println(ANSI_GREEN);
                 System.out.println(msgSuccess);
+                System.out.println(ANSI_RESET);
             }
         }
         return input;
-    } //cognome, nome, LuogoNascita, materia, classe,sesso
+    }
+
 
     public String dammiSesso(String msgShow, String msgRetry, String msgError,
                              String msgSuccess, int tentativi) {
+        String input=null;
         String regexSesso = "^[mfMF]$";
-        String input;
-        Integer[] arrResult = new Integer[2];
         do {
             System.out.println(msgShow);
-            input = sc.nextLine();
+            input = sc.nextLine().trim();
             if (!Pattern.matches(regexSesso, input)) {
+                System.out.println(ANSI_ORANGE);
                 System.out.println(msgRetry);
+                System.out.println(ANSI_RESET);
                 tentativi--;
             }
-        } while (!Pattern.matches(regexSesso, input) && tentativi != 0);
+        } while (input == null || !Pattern.matches(regexSesso, input) && tentativi != 0);
         if (tentativi == 0) {
+            System.out.println(ANSI_RED);
             System.out.println(msgError);
+            System.out.println(ANSI_RESET);
             input = null;
         } else {
+            System.out.println(ANSI_GREEN);
             System.out.println(msgSuccess);
+            System.out.println(ANSI_RESET);
         }
 
         return input;
@@ -231,134 +264,164 @@ public class GestioneConsole {
         int asciiInizio = (int) letteraInizio.charAt(0);
         int asciiFine = (int) letteraFine.charAt(0);
         String input = null;
-        Integer[] arrResult = new Integer[2];
         if (asciiInizio > asciiFine || letteraInizio.length() > 1 || letteraFine.length() > 1) {
+            System.out.println(ANSI_RED);
             System.out.println("Range di lettere non valido");
+            System.out.println(ANSI_RESET);
         } else {
-            String regexSezioneClasse = "^[A-D]$";
-            String regexString = "^[" + letteraInizio.toLowerCase() + "-" + letteraFine.toLowerCase() + letteraInizio.toUpperCase() + "-" + letteraFine.toUpperCase() + "]$";
+            String regexString = "^([" + letteraInizio.toLowerCase() + "-" + letteraFine.toLowerCase() + letteraInizio.toUpperCase() + "-" + letteraFine.toUpperCase() + "])$";
             do {
                 System.out.println(msgShow);
-                input = sc.nextLine();
-                if (!Pattern.matches(regexString, input)) {
+                input = sc.nextLine().trim();
+                if (input != null && !Pattern.matches(regexString, input)) {
+                    System.out.println(ANSI_ORANGE);
                     System.out.println(msgRetry);
+                    System.out.println(ANSI_RESET);
                     input = null;
                     tentativi--;
                 }
-            } while (!Pattern.matches(regexString, input) && tentativi != 0);
+            } while (input == null && tentativi != 0);
             if (input == null) {
+                System.out.println(ANSI_RED);
                 System.out.println(msgError);
+                System.out.println(ANSI_RESET);
             } else {
+                System.out.println(ANSI_GREEN);
                 System.out.println(msgSuccess);
+                System.out.println(ANSI_RESET);
             }
-
         }
         return input;
-    } //classe
+    }
+
 
     public LocalDate dammiData(String msgShow, String msgRetry, String msgError,
                                String msgSuccess, int tentativi, int minYear, int maxYear) {
-
-        String input;
+        String input = null;
+        LocalDate data = null;
         String minYearString = String.valueOf(minYear);
         String maxYearString = String.valueOf(maxYear);
-        LocalDate data = null;
+
         if (minYear > maxYear || minYearString.length() != 4 || maxYearString.length() != 4) {
             System.out.println("Range di anni non valido");
         } else {
-            String regexData = "^\\d{2}-\\d{2}-(" + minYear + "|" + maxYear + ")$";
+            String regexData = "^(0[1-9]|1\\d|2[0-8])-(0[1-9]|1[0-2])-(19\\d{2}|20[0-2]\\d|202[0-4])$";
             do {
                 System.out.println(msgShow);
-                input = sc.nextLine();
-                if (!Pattern.matches(regexData, input)) {
+                input = sc.nextLine().trim();
+                if (input != null && !Pattern.matches(regexData, input)) {
+                    System.out.println(ANSI_ORANGE);
                     System.out.println(msgRetry);
+                    System.out.println(ANSI_RESET);
                     input = null;
                     tentativi--;
                 }
-            } while (!Pattern.matches(regexData, input) && tentativi != 0);
+            } while (input == null && tentativi != 0);
             if (input == null) {
+                System.out.println(ANSI_RED);
                 System.out.println(msgError);
+                System.out.println(ANSI_RESET);
             } else {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                 data = LocalDate.parse(input, formatter);
+                System.out.println(ANSI_GREEN);
                 System.out.println(msgSuccess);
+                System.out.println(ANSI_RESET);
             }
-
         }
         return data;
     }
+
     public LocalTime dammiOra(String msgShow, String msgRetry, String msgError,
                               String msgSuccess, int tentativi, String minHour, String maxHour) {
+
         if(minHour.length()!=2||maxHour.length()!=2){
             System.out.println("Range di ore non valido, deve essere formsto hh (2 caratteri)");
         }
-        String input;
+        String input=null;
         LocalTime localTime = null;
         String regexTime = "^("+minHour+"|"+maxHour+"]):[0-5][0-9]$";
         do {
             System.out.println(msgShow);
-            input = sc.nextLine();
-            if (!Pattern.matches(regexTime, input)) {
+            input = sc.nextLine().trim();
+            if (input != null&&!Pattern.matches(regexTime, input)) {
+                System.out.println(ANSI_ORANGE);
                 System.out.println(msgRetry);
+                System.out.println(ANSI_RESET);
                 input = null;
                 tentativi--;
             }
         } while (input == null && tentativi != 0);
         if (input == null) {
+            System.out.println(ANSI_RED);
             System.out.println(msgError);
+            System.out.println(ANSI_RESET);
         } else {
             localTime = LocalTime.parse(input);
+            System.out.println(ANSI_GREEN);
             System.out.println(msgSuccess);
+            System.out.println(ANSI_RESET);
         }
         return localTime;
     }
 
     public String dammiMail(String msgShow, String msgRetry, String msgError,
                             String msgSuccess, int tentativi) {
-        String input;
-
-        LocalDate data = null;
+        String input = null;
         String regexMail = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         do {
             System.out.println(msgShow);
-            input = sc.nextLine();
+            input = sc.nextLine().trim();
             if (!Pattern.matches(regexMail, input)) {
+                System.out.println(ANSI_ORANGE);
                 System.out.println(msgRetry);
-                input = null;
+                System.out.println(ANSI_RESET);
                 tentativi--;
             }
-        } while (!Pattern.matches(regexMail, input) && tentativi != 0);
+        } while (input == null || !Pattern.matches(regexMail, input) && tentativi != 0);
+
         if (input == null) {
+            System.out.println(ANSI_RED);
             System.out.println(msgError);
+            System.out.println(ANSI_RESET);
         } else {
+            System.out.println(ANSI_GREEN);
             System.out.println(msgSuccess);
+            System.out.println(ANSI_RESET);
         }
 
         return input;
     }
 
+
     public String dammiCodiceFiscale(String msgShow, String msgRetry, String msgError,
                                      String msgSuccess, int tentativi) {
-        String input;
+        String input = null;
         String regexCodiceFiscale = "^[A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z]$";
 
         do {
             System.out.println(msgShow);
-            input = sc.nextLine();
+            input = sc.nextLine().trim();
             if (!Pattern.matches(regexCodiceFiscale, input)) {
+                System.out.println(ANSI_ORANGE);
                 System.out.println(msgRetry);
-                input = null;
+                System.out.println(ANSI_RESET);
                 tentativi--;
             }
-        } while (!Pattern.matches(regexCodiceFiscale, input) && tentativi != 0);
+        } while (input == null || !Pattern.matches(regexCodiceFiscale, input) && tentativi != 0);
+
+
         if (input == null) {
+            System.out.println(ANSI_RED);
             System.out.println(msgError);
+            System.out.println(ANSI_RESET);
         } else {
+            System.out.println(ANSI_GREEN);
             System.out.println(msgSuccess);
+            System.out.println(ANSI_RESET);
         }
 
         return input;
-
     }
 
     public void chiudiScanner() {
